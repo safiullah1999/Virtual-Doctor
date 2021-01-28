@@ -1,0 +1,49 @@
+drop sequence heart_report_id cascade;
+drop table heart_report cascade;
+drop table patient_heart_report;
+
+
+CREATE SEQUENCE heart_report_id
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
+
+CREATE TABLE heart_report(
+   heart_report_id TEXT NOT null primary key DEFAULT 'H19000'||nextval('heart_report_id'::regclass)::text,
+   age integer,
+   sex integer,
+   cp  float8,
+   trestbps float8,
+   chol float8,
+   fbs float8,
+   restecg float8,
+   thalach float8,
+   exang float8,
+   oldpeak float8,
+   slope float8,
+   ca float8,
+   thal float8
+   );
+CREATE TABLE patient_heart_report(
+heart_report_id TEXT ,
+patient_id text,
+PRIMARY KEY(patient_id,heart_report_id)
+);
+
+ALTER TABLE patient_heart_report ADD CONSTRAINT phrfk1 FOREIGN KEY (heart_report_id) REFERENCES heart_report(heart_report_id) ON DELETE CASCADE;
+ALTER TABLE patient_heart_report ADD CONSTRAINT phrfk2 FOREIGN KEY (patient_id) REFERENCES Patient(patient_id) ON DELETE CASCADE;
+
+ 
+INSERT INTO heart_report(age,sex,cp,trestbps,chol,fbs,restecg,thalach,exang,oldpeak,slope,ca,thal) VALUES (63,1,0.0,145.0,233,1,0,150,0,2.30,0,0,1);
+INSERT INTO heart_report(age,sex,cp,trestbps,chol,fbs,restecg,thalach,exang,oldpeak,slope,ca,thal) VALUES(18,1,0.0,145.0,233,1,0,140,0,2.40,1,0,1);
+INSERT INTO heart_report(age,sex,cp,trestbps,chol,fbs,restecg,thalach,exang,oldpeak,slope,ca,thal) VALUES(25,1,3.0,144.0,133,1,0,151,0,2.30,0,0,1);
+
+INSERT INTO patient_heart_report VALUES ('H190001','P190001');
+INSERT INTO patient_heart_report VALUES ('H190002','P190002');
+INSERT INTO patient_heart_report VALUES ('H190003','P190003');
+
+
+
+

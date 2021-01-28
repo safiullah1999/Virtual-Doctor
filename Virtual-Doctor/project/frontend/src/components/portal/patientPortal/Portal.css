@@ -1,0 +1,78 @@
+/* #f2f3f8 */
+
+.font {
+  font-size: 14px;
+}
+.link {
+  all: unset;
+}
+.linkSign.link {
+  color: #001529;
+}
+.linkSign:hover {
+  color: #9e9b9b;
+}
+
+.linkSign:hover .link {
+  color: #9e9b9b;
+}
+.color {
+  background-color: #073e728a;
+}
+.position {
+  float: right;
+  margin-right: 50px;
+  margin-top: 0px;
+  font-size: 15px;
+}
+.menu {
+  color: #001529;
+}
+.head1 {
+  background-color: #53a9ff54;
+}
+.head2 {
+  height: 30px;
+}
+.heading1 {
+  height: auto;
+  width: auto;
+  font-size: 1.4em;
+  margin-left: 50px;
+  letter-spacing: 1px;
+}
+.heading2 {
+  height: auto;
+  width: auto;
+  font-size: 1.4em;
+  margin-left: 350px;
+  letter-spacing: 1px;
+}
+
+@keyframes heartbeat {
+  0% {
+    transform: scale(0.75);
+  }
+  20% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(0.75);
+  }
+  60% {
+    transform: scale(1);
+  }
+  80% {
+    transform: scale(0.75);
+  }
+  100% {
+    transform: scale(0.75);
+  }
+}
+
+.heart {
+  margin-left: 50px;
+  width: 50px;
+  height: 50px;
+  animation: heartbeat 1.7s infinite;
+}

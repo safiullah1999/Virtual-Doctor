@@ -1,0 +1,428 @@
+drop sequence patient_id cascade;
+drop table Patient cascade;
+drop sequence doctor_id cascade;
+drop table Doctor cascade;
+drop sequence admin_id cascade;
+drop table admin cascade;
+drop sequence med_id cascade;
+drop table medicine cascade;
+drop sequence pres_id cascade;
+drop table prescriptions cascade;
+drop sequence dept_id cascade;
+drop table department cascade;
+drop sequence bill_id cascade;
+drop table bill cascade;
+drop sequence app_id_seq cascade;
+drop table appointment cascade;
+drop table patient_appointment cascade;
+drop table medicine_prescriptions cascade;
+drop table patient_medicine cascade;
+drop table patient_Bill cascade;
+drop table patient_admin cascade;
+drop table report1 cascade;
+drop table patient_report1 cascade;
+drop table Patient_request cascade;
+drop table Doctor_request cascade;
+drop table doctor_app_count cascade;
+drop table doc_pat_app cascade;
+
+
+
+
+CREATE SEQUENCE Patient_id
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
+
+CREATE TABLE Patient(
+   patient_id TEXT NOT null primary key DEFAULT 'P19000'||nextval('Patient_id'::regclass)::text,
+   firstname text,
+   lastname text,
+   age integer,
+   address text,
+   contact text,
+   gender text,
+   usertype text,
+   password text,
+   email text
+
+);
+
+CREATE SEQUENCE Doctor_id
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
+
+CREATE TABLE Doctor(
+   doctor_id TEXT NOT null primary key DEFAULT 'D19000'||nextval('Doctor_id'::regclass)::text,
+   firstname text,
+   lastname text,
+   age text,
+   contact text,
+   joining_date date,
+   dept_id text,
+   qualification text,
+   address text,
+   gender text,
+   salary float8,
+   usertype text,
+   password text,
+   email text
+);
+
+CREATE SEQUENCE Admin_id
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
+
+CREATE TABLE Admin(
+   admin_id TEXT NOT null primary key DEFAULT 'A19000'||nextval('Admin_id'::regclass)::text,
+   firstname text,
+   lastname text,
+  usertype text,
+    password text,
+    email text
+);
+
+CREATE SEQUENCE med_id
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
+
+CREATE TABLE Medicine(
+   med_id TEXT NOT null primary key DEFAULT 'M19000'||nextval('med_id'::regclass)::text,
+   med_cost float8,
+   med_name text
+);
+
+CREATE SEQUENCE pres_id
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
+
+
+
+
+CREATE TABLE Prescriptions(
+   pres_id TEXT NOT null primary key DEFAULT 'Pr19000'||nextval('pres_id'::regclass)::text,
+   by_doctor_id text,
+   to_patient_id text,
+   issue_date date
+);
+
+CREATE SEQUENCE dept_id
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
+
+
+
+CREATE TABLE Department(
+   dept_id TEXT NOT null primary key DEFAULT 'Dp19000'||nextval('dept_id'::regclass)::text,
+   dept_head_id text,
+   dept_name text,
+   cost float8
+);
+
+CREATE SEQUENCE Bill_id
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
+
+CREATE TABLE Bill(
+   bill_id TEXT NOT null primary key DEFAULT 'B000'||nextval('Bill_id'::regclass)::text,
+   total_cost float8,
+   bill_date date
+);
+
+CREATE SEQUENCE app_id_seq
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
+
+
+CREATE TABLE Appointment(
+   appointment_id TEXT NOT null primary key DEFAULT 'AP000'||nextval('app_id_seq'::regclass)::text,
+   appointment_date date,
+   by_doctor_id text
+);
+
+CREATE TABLE patient_appointment(
+   patient_id text,
+   appointment_id text,
+   PRIMARY KEY(patient_id,appointment_id)
+);
+
+
+
+CREATE TABLE medicine_prescriptions(
+   pres_id text,
+   med_id text,
+   dosage text,
+   PRIMARY KEY(pres_id,med_id)
+);
+
+CREATE TABLE patient_medicine(
+   med_id text,
+   pid text,
+   quantity integer,
+   PRIMARY KEY(med_id,pid)
+   
+);
+
+CREATE TABLE patient_Bill(
+   patient_id text,
+   bill_id text,
+   PRIMARY KEY(bill_id,patient_id)
+);
+
+CREATE TABLE patient_admin(
+   patient_id text,
+   admin_id text,
+   PRIMARY KEY(patient_id,admin_id)
+);
+
+drop sequence reportid1_seq cascade;
+
+CREATE SEQUENCE reportid1_seq
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
+
+
+CREATE TABLE report1(
+report_id  TEXT NOT null primary key DEFAULT 'R000'||nextval('reportid1_seq'::regclass)::TEXT,
+Haematocrit  float8,
+Erythrocytes_RBC float8,
+Leucocytes_WBC float8,
+RDW_CV float8,
+Platelets float8,
+PDW float8,
+MPV float8
+);
+
+
+CREATE TABLE patient_report1(
+report_id TEXT ,
+patient_id text,
+PRIMARY KEY(patient_id,report_id)
+);
+
+ALTER TABLE patient_report1 DROP CONSTRAINT rppk;
+ALTER TABLE patient_report1 DROP CONSTRAINT rpfk1;
+ALTER TABLE patient_report1 DROP CONSTRAINT rpfk2;
+
+
+ALTER TABLE patient_report1 ADD CONSTRAINT rpfk1 FOREIGN KEY (report_id) REFERENCES Report1(report_id) ON DELETE CASCADE;
+ALTER TABLE patient_report1 ADD CONSTRAINT rpfk2 FOREIGN KEY (patient_id) REFERENCES Patient(patient_id) ON DELETE CASCADE;
+
+ALTER TABLE PATIENT_BILL DROP CONSTRAINT pbfk1;
+ALTER TABLE PATIENT_BILL DROP CONSTRAINT pbfk2;
+
+ALTER TABLE patient_Bill ADD CONSTRAINT pbfk1 FOREIGN KEY (patient_id) REFERENCES Patient(patient_id) ON DELETE CASCADE;
+ALTER TABLE patient_Bill ADD CONSTRAINT pbfk2 FOREIGN KEY (bill_id) REFERENCES Bill(bill_id) ON DELETE CASCADE;
+
+ALTER TABLE patient_medicine DROP CONSTRAINT pmfk1;
+ALTER TABLE patient_medicine DROP CONSTRAINT pmfk2;
+
+ALTER TABLE patient_medicine ADD CONSTRAINT pmfk1 FOREIGN KEY (pid) REFERENCES Patient(patient_id) ON DELETE CASCADE;
+ALTER TABLE patient_medicine ADD CONSTRAINT pmfk2 FOREIGN KEY (med_id) REFERENCES Medicine(med_id) ON DELETE CASCADE;
+
+ALTER TABLE patient_appointment DROP CONSTRAINT pafk3;
+ALTER TABLE patient_appointment DROP CONSTRAINT pafk2;
+
+ALTER TABLE patient_appointment ADD CONSTRAINT pafk3 FOREIGN KEY (appointment_id) REFERENCES Appointment(appointment_id) ON DELETE CASCADE;
+ALTER TABLE patient_appointment ADD CONSTRAINT pafk2 FOREIGN KEY (patient_id) REFERENCES Patient(patient_id) ON DELETE CASCADE;
+
+ALTER TABLE medicine_prescriptions DROP CONSTRAINT mpfk1;
+ALTER TABLE medicine_prescriptions DROP CONSTRAINT mpfk2;
+
+ALTER TABLE medicine_prescriptions ADD CONSTRAINT mpfk1 FOREIGN KEY (pres_id) REFERENCES Prescriptions(pres_id) ON DELETE CASCADE;
+ALTER TABLE medicine_prescriptions ADD CONSTRAINT mpfk2 FOREIGN KEY (med_id) REFERENCES Medicine(med_id) ON DELETE CASCADE;
+
+ALTER TABLE patient_admin DROP CONSTRAINT padfk1;
+ALTER TABLE patient_admin DROP CONSTRAINT padfk2;
+
+ALTER TABLE patient_admin ADD CONSTRAINT padfk1 FOREIGN KEY (patient_id) REFERENCES patient(patient_id) ON DELETE CASCADE;
+ALTER TABLE patient_admin ADD CONSTRAINT padfk2 FOREIGN KEY (admin_id)   REFERENCES admin(admin_id) ON DELETE CASCADE;
+
+ALTER TABLE patient_report1 DROP CONSTRAINT rpfk1;
+
+ALTER TABLE patient_report1 ADD CONSTRAINT rpfk1 FOREIGN KEY (report_id) REFERENCES Report(report_id) ON DELETE CASCADE;
+
+ALTER TABLE Prescritpions DROP CONSTRAINT ppfk;
+ALTER TABLE Prescritpions DROP CONSTRAINT pdfk;
+
+ALTER TABLE Prescriptions ADD CONSTRAINT ppfk FOREIGN KEY (to_patient_id) REFERENCES Patient(patient_id) ON DELETE CASCADE;
+ALTER TABLE Prescriptions ADD CONSTRAINT pdfk FOREIGN KEY (by_doctor_id) REFERENCES Doctor(doctor_id) ON DELETE CASCADE;
+
+ALTER TABLE DOCTOR ADD CONSTRAINT ddfk FOREIGN KEY (dept_id) REFERENCES department(dept_id) ON DELETE CASCADE;
+
+CREATE TABLE Patient_request(
+   patient_id text PRIMARY KEY ,
+   firstname text,
+   lastname text,
+   age integer,
+   address text,
+   DOB date,
+   contact text,
+   gender text,
+   email text
+);
+ALTER TABLE Patient_request DROP CONSTRAINT pprfk;
+ALTER TABLE Patient_request ADD CONSTRAINT pprfk FOREIGN KEY (patient_id) REFERENCES Patient(patient_id) ON DELETE CASCADE;
+
+
+CREATE TABLE Doctor_request(
+   doctor_id text PRIMARY KEY,
+   firstname text,
+   lastname text,
+   contact text,
+   joining_date date,
+   age integer,
+   dept_id text,
+   qualification text,
+   address text,
+   DOB date,
+   gender text,
+   salary float8,
+   email text
+);
+
+ALTER TABLE Doctor_request DROP CONSTRAINT ddrfk;
+ALTER TABLE Doctor_request ADD CONSTRAINT ddrfk FOREIGN KEY (doctor_id) REFERENCES Doctor(doctor_id) ON DELETE CASCADE;
+
+drop sequence patient_sno cascade;
+drop sequence doctor_sno cascade;
+drop table log_patient cascade;
+drop table log_doctor cascade;
+
+CREATE SEQUENCE patient_sno
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
+
+CREATE TABLE Log_patient(
+   operation         text   NOT NULL,
+   stamp             text DEFAULT CURRENT_DATE,
+   db text,
+   patient_id TEXT ,
+   firstname text,
+   lastname text,
+   age text,
+   address text,
+   contact text,
+   gender text,
+   usertype text,
+   password text,
+   email text,
+   s_no TEXT NOT null primary key DEFAULT 'P0'||nextval('patient_sno'::regclass)::text
+);
+
+CREATE SEQUENCE doctor_sno
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
+
+CREATE TABLE Log_doctor(
+   operation         text   NOT NULL,
+   stamp             text DEFAULT CURRENT_DATE,
+   db text,
+   doctor_id TEXT ,
+   firstname text,
+   lastname text,
+   age text,
+   contact text,
+   joining_date date,
+   dept_id text,
+   qualification text,
+   address text,
+   gender text,
+   salary float8,
+   usertype text,
+   password text,
+   email text,
+   s_no TEXT NOT null primary key DEFAULT 'D0'||nextval('doctor_sno'::regclass)::text
+);
+
+
+CREATE OR REPLACE FUNCTION process_patient() RETURNS TRIGGER AS $log_patient$
+    BEGIN
+        --
+        -- Create a row in emp_audit to reflect the operation performed on emp,
+        -- make use of the special variable TG_OP to work out the operation.
+        --
+        IF (TG_OP = 'DELETE') THEN
+            INSERT INTO log_patient SELECT 'D', now(), user, OLD.*;
+            RETURN OLD;
+        ELSIF (TG_OP = 'UPDATE') THEN
+            INSERT INTO log_patient SELECT 'U', now(), user, NEW.*;
+            RETURN NEW;
+        END IF;
+        RETURN NULL; -- result is ignored since this is an AFTER trigger
+    END;
+$log_patient$ LANGUAGE plpgsql;
+--
+CREATE TRIGGER log_patient
+AFTER UPDATE OR DELETE ON patient
+    FOR EACH ROW EXECUTE PROCEDURE process_patient();
+
+CREATE OR REPLACE FUNCTION process_doctor() RETURNS TRIGGER AS $log_doctor$
+    BEGIN
+        --
+        -- Create a row in emp_audit to reflect the operation performed on emp,
+        -- make use of the special variable TG_OP to work out the operation.
+        --
+        IF (TG_OP = 'DELETE') THEN
+            INSERT INTO log_doctor SELECT 'D', now(), user, OLD.*;
+            RETURN OLD;
+        ELSIF (TG_OP = 'UPDATE') THEN
+            INSERT INTO log_doctor SELECT 'U', now(), user, NEW.*;
+            RETURN NEW;
+        END IF;
+        RETURN NULL; -- result is ignored since this is an AFTER trigger
+    END;
+$log_doctor$ LANGUAGE plpgsql;
+--
+CREATE TRIGGER log_doctor
+AFTER UPDATE OR DELETE ON doctor
+    FOR EACH ROW EXECUTE PROCEDURE process_doctor();   
+
+CREATE TABLE doctor_app_count(
+     doctor_id text PRIMARY KEY,
+     count INT
+
+
+);
+
+CREATE TABLE doc_pat_app(
+      doctor_id text,
+      patient_id text,
+      PRIMARY KEY(patient_id,doctor_id)
+ 
+);
+ALTER TABLE doctor_app_count ADD CONSTRAINT dpcfk FOREIGN KEY (doctor_id) REFERENCES Doctor(doctor_id) ON DELETE CASCADE;
+ALTER TABLE doc_pat_app ADD CONSTRAINT dpafk1 FOREIGN KEY (doctor_id) REFERENCES Doctor(doctor_id) ON DELETE CASCADE;
+ALTER TABLE doc_pat_app ADD CONSTRAINT dpafk2 FOREIGN KEY (patient_id) REFERENCES Patient(patient_id) ON DELETE CASCADE

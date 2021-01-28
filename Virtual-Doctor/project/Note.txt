@@ -1,0 +1,54 @@
+To run frontend separately(port 3000)
+	
+	cd frontend
+	npm start
+
+--------------------------
+
+To run backend separately(port 5000)
+
+	npm run server(with nodemon)
+	npm start
+
+--------------------------
+
+To run both concurrently
+
+	npm run dev
+
+--------------------------
+
+To run flask server(port 4000)
+
+	pip install -U flask-cors
+	set FLASK_APP=app.py
+	set FLASK_RUN_PORT=4000
+	flask run
+
+--------------------------
+
+for backend package.json
+
+	npm i bcryptjs body-parser concurrently cors express pg
+	npm i -D nodemon
+
+	npm start
+
+--------------------------
+
+for frontend package.json
+
+	cd frontend
+	npm i antd formik react react-dom react-redux react-router-dom react-scripts react-simple-chatbot redux styled-components yup
+
+npm start
+
+--------------------------
+
+NOTE:
+	DML contains password in hashed format .The password is 1234
+	When creating a new user, the id is used as a password and the user can change it after logging in
+
+	Admin   ->  A190001 - 1234
+	Doctor  ->  D190001 - 1234
+	Patient ->  P190001 - 1234

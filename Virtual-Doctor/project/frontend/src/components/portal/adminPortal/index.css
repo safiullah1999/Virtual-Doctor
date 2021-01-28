@@ -1,0 +1,22 @@
+a:link {
+    text-decoration: none;
+    color : #b8ed82
+  }
+  
+  /* visited link */
+  a:visited {
+    text-decoration: none;
+    color : #b8ed82
+  }
+  
+  /* mouse over link */
+  a:hover {
+    text-decoration: none;
+    color : #b8ed82
+  }
+  
+  /* selected link */
+  a:active {
+    text-decoration: none;
+    color : #b8ed82
+  }

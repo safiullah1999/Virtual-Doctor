@@ -1,0 +1,19 @@
+Create DB with PostgreSQl
+
+https://youtu.be/RySuQtMiBxQ
+
+	(Go to)SQl shell
+
+	login with postgres user and password
+
+	CREATE USER taha WITH PASSWORD 'taha1';
+
+	CREATE DATABASE hospital WITH OWNER taha;
+
+	\l
+	
+	\c hospital
+
+Connect PostgreSQL DB with DBeaver
+
+https://youtu.be/XRdl0P4V-PU
